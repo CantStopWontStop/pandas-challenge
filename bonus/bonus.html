@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Py City Schools Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="bonus_files/libs/clipboard/clipboard.min.js"></script>
+<script src="bonus_files/libs/quarto-html/quarto.js"></script>
+<script src="bonus_files/libs/quarto-html/popper.min.js"></script>
+<script src="bonus_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="bonus_files/libs/quarto-html/anchor.min.js"></script>
+<link href="bonus_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="bonus_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="bonus_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="bonus_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="bonus_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#district-summary" id="toc-district-summary" class="nav-link active" data-scroll-target="#district-summary">District Summary</a></li>
+  <li><a href="#school-analysis" id="toc-school-analysis" class="nav-link" data-scroll-target="#school-analysis">School Analysis</a>
+  <ul class="collapse">
+  <li><a href="#performance-by-school" id="toc-performance-by-school" class="nav-link" data-scroll-target="#performance-by-school">Performance by School</a></li>
+  <li><a href="#performance-by-grade" id="toc-performance-by-grade" class="nav-link" data-scroll-target="#performance-by-grade">Performance by Grade</a></li>
+  <li><a href="#performance-by-characteristic" id="toc-performance-by-characteristic" class="nav-link" data-scroll-target="#performance-by-characteristic">Performance by Characteristic</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Py City Schools Analysis</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># read in CSVs and assign data</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>schools_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../Resources/schools_complete.csv"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>students_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../Resources/students_complete.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<section id="district-summary" class="level2">
+<h2 class="anchored" data-anchor-id="district-summary">District Summary</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>n_schools <span class="ot">&lt;-</span> <span class="fu">nrow</span>(schools_data)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n_students <span class="ot">&lt;-</span> <span class="fu">sum</span>(schools_data<span class="sc">$</span>size) <span class="sc">|&gt;</span> <span class="fu">format</span>(<span class="at">big.mark =</span> <span class="st">","</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>total_budget <span class="ot">&lt;-</span> <span class="fu">sum</span>(schools_data<span class="sc">$</span>budget) <span class="sc">|&gt;</span> <span class="fu">format</span>(<span class="at">big.mark =</span> <span class="st">","</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>avg_mth_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(students_data<span class="sc">$</span>math_score) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>avg_rdg_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(students_data<span class="sc">$</span>reading_score) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pass_math <span class="ot">&lt;-</span> students_data <span class="sc">|&gt;</span> </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span> (math_score <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()<span class="sc">/</span>students_data <span class="sc">|&gt;</span> <span class="fu">nrow</span>() </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>per_pass_math <span class="ot">&lt;-</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> .<span class="dv">1</span>)(pass_math)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>pass_read <span class="ot">&lt;-</span> students_data <span class="sc">|&gt;</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span> (reading_score <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()<span class="sc">/</span>students_data <span class="sc">|&gt;</span> <span class="fu">nrow</span>() </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>per_pass_read <span class="ot">&lt;-</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> .<span class="dv">1</span>)(pass_read)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>pass_math_read <span class="ot">&lt;-</span> students_data <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span> (reading_score <span class="sc">&gt;=</span> <span class="dv">70</span> <span class="sc">&amp;</span> math_score <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()<span class="sc">/</span>students_data <span class="sc">|&gt;</span> </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>() </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>per_pass_math_read <span class="ot">&lt;-</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> .<span class="dv">1</span>)(pass_math_read)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<ul>
+<li><p>Total number of unique schools: 15</p></li>
+<li><p>Total students: 39,170</p></li>
+<li><p>Total budget: $24,649,428</p></li>
+<li><p>Average math score: 79</p></li>
+<li><p>Average reading score: 81.9</p></li>
+<li><p>% passing math (the percentage of students who passed math): 75.0%</p></li>
+<li><p>% passing reading (the percentage of students who passed reading): 85.8%</p></li>
+<li><p>% overall passing (the percentage of students who passed math AND reading): 65.2%</p></li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>schools_summary <span class="ot">&lt;-</span>  students_data <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(school_name) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_mth    =</span> <span class="fu">mean</span>(math_score),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">avg_rdg    =</span> <span class="fu">mean</span>(reading_score),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_mth =</span> <span class="fu">sum</span>(pass_mth),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_rdg =</span> <span class="fu">sum</span>(pass_rdg),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_bth =</span> <span class="fu">sum</span>(pass_bth)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>schools_students_data <span class="ot">&lt;-</span> schools_data <span class="sc">|&gt;</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(students_data) <span class="sc">|&gt;</span> </span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">school_size =</span> <span class="fu">case_when</span>(</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        size <span class="sc">&gt;=</span><span class="dv">2500</span> <span class="sc">~</span> <span class="st">"large"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        size <span class="sc">&gt;=</span><span class="dv">1000</span> <span class="sc">~</span> <span class="st">"medium"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small"</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># |&gt; </span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     left_join(schools_summary) </span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co"># |&gt; </span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     pivot_longer(c("n_pass_mth",</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "n_pass_rdg",</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "n_pass_bth", </span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "avg_mth",</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "avg_rdg"), </span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co">#                  names_to = "subj",</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co">#                  values_to = "score")</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="co"># schools_students_data |&gt; </span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#     select(-students_data) |&gt; </span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="co">#     gt()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>schools_students_data <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>))  <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   <span class="co"># filter(!str_detect(subj, "avg"))</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> school_size, <span class="at">y =</span> avg_mth_score, <span class="at">color =</span> )) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>schools_students_data <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>))  <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>   <span class="co"># filter(!str_detect(subj, "avg"))</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> school_name, <span class="at">y =</span> avg_mth_score)) <span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="school-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="school-analysis">School Analysis</h2>
+<section id="performance-by-school" class="level3">
+<h3 class="anchored" data-anchor-id="performance-by-school">Performance by School</h3>
+<section id="highest-performing-schools-by-overall-passing" class="level4">
+<h4 class="anchored" data-anchor-id="highest-performing-schools-by-overall-passing">Highest-Performing Schools (by % Overall Passing)</h4>
+</section>
+<section id="lowest-performing-schools-by-overall-passing" class="level4">
+<h4 class="anchored" data-anchor-id="lowest-performing-schools-by-overall-passing">Lowest-Performing Schools (by % Overall Passing)</h4>
+</section>
+</section>
+<section id="performance-by-grade" class="level3">
+<h3 class="anchored" data-anchor-id="performance-by-grade">Performance by Grade</h3>
+<section id="math-scores-by-grade" class="level4">
+<h4 class="anchored" data-anchor-id="math-scores-by-grade">Math Scores by Grade</h4>
+</section>
+<section id="reading-scores-by-grade" class="level4">
+<h4 class="anchored" data-anchor-id="reading-scores-by-grade">Reading Scores by Grade</h4>
+</section>
+</section>
+<section id="performance-by-characteristic" class="level3">
+<h3 class="anchored" data-anchor-id="performance-by-characteristic">Performance by Characteristic</h3>
+<section id="scores-by-school-spending" class="level4">
+<h4 class="anchored" data-anchor-id="scores-by-school-spending">Scores by School Spending</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>schools_summary <span class="ot">&lt;-</span>  students_data <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(school_name) <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_mth    =</span> <span class="fu">mean</span>(math_score),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">avg_rdg    =</span> <span class="fu">mean</span>(reading_score),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_mth =</span> <span class="fu">sum</span>(pass_mth),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_rdg =</span> <span class="fu">sum</span>(pass_rdg),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_bth =</span> <span class="fu">sum</span>(pass_bth)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(schools_data) <span class="sc">|&gt;</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">per_pass_math =</span> n_pass_mth<span class="sc">/</span>size, </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_rdg  =</span> n_pass_rdg<span class="sc">/</span>size,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_bth  =</span> n_pass_bth<span class="sc">/</span>size,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">budget_per_std  =</span> budget<span class="sc">/</span>size) <span class="sc">|&gt;</span> </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(per_pass_bth))</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>schools_summary <span class="sc">|&gt;</span> </span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_number</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>               <span class="at">decimals  =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_integer</span>(<span class="at">columns  =</span> <span class="fu">c</span>(<span class="st">'size'</span>),</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep_mark =</span> <span class="st">","</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_percent</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>                <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_currency</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'budget'</span>),</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">decimals =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cols_hide</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">'n_pass'</span>),<span class="st">'School ID'</span>, <span class="st">'type'</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"Characteristics"</span>,</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>                <span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="fu">c</span>(<span class="st">"budget"</span>,<span class="st">"size"</span>)))  <span class="sc">|&gt;</span> </span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"Performance"</span>,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>                <span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="fu">c</span>(<span class="st">"avg"</span>,<span class="st">"per"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt_color_rows</span>( <span class="fu">starts_with</span>(<span class="st">"avg"</span>),</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>                  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#FFFFFF"</span>,<span class="st">"#006D2C"</span>),</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>                  <span class="at">domain =</span> <span class="dv">40</span><span class="sc">:</span><span class="dv">90</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt_color_rows</span>( <span class="fu">starts_with</span>(<span class="st">"per"</span>),</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>                   <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#FFFFFF"</span>,<span class="st">"#006D2C"</span>),</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                   <span class="at">domain =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>)<span class="sc">|&gt;</span> </span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gt_color_rows( starts_with("per"),</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                palette = c("#FFFFFF","#006D2C"),</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                domain = 0:1)|&gt; </span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'budget'</span>),</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Blues"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="dv">50</span><span class="sc">:</span><span class="dv">90</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt_color_rows</span>(size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="fgxkuujgia" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#fgxkuujgia .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fgxkuujgia .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fgxkuujgia .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fgxkuujgia .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fgxkuujgia .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fgxkuujgia .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fgxkuujgia .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fgxkuujgia .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fgxkuujgia .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fgxkuujgia .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fgxkuujgia .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fgxkuujgia .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fgxkuujgia .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgxkuujgia .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fgxkuujgia .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fgxkuujgia .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgxkuujgia .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fgxkuujgia .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgxkuujgia .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fgxkuujgia .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgxkuujgia .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fgxkuujgia .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgxkuujgia .gt_left {
+  text-align: left;
+}
+
+#fgxkuujgia .gt_center {
+  text-align: center;
+}
+
+#fgxkuujgia .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fgxkuujgia .gt_font_normal {
+  font-weight: normal;
+}
+
+#fgxkuujgia .gt_font_bold {
+  font-weight: bold;
+}
+
+#fgxkuujgia .gt_font_italic {
+  font-style: italic;
+}
+
+#fgxkuujgia .gt_super {
+  font-size: 65%;
+}
+
+#fgxkuujgia .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#fgxkuujgia .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fgxkuujgia .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fgxkuujgia .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fgxkuujgia .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fgxkuujgia .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fgxkuujgia .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1" scope="col">school_name</th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="5" scope="colgroup">
+        <span class="gt_column_spanner">Performance</span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3" scope="colgroup">
+        <span class="gt_column_spanner">Characteristics</span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">avg_mth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">avg_rdg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">per_pass_math</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">per_pass_rdg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">per_pass_bth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">budget</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">budget_per_std</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">size</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Wilson High School</td>
+<td class="gt_row gt_right" style="background-color: #0E7735; color: #FFFFFF;">83.3</td>
+<td class="gt_row gt_right" style="background-color: #087331; color: #FFFFFF;">84.0</td>
+<td class="gt_row gt_right" style="background-color: #004C1F; color: #FFFFFF;">90.9%</td>
+<td class="gt_row gt_right" style="background-color: #005020; color: #FFFFFF;">93.3%</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">84.9%</td>
+<td class="gt_row gt_right" style="background-color: #9FCAE1; color: #000000;">$1,319,574</td>
+<td class="gt_row gt_right" style="background-color: #F7FBFF; color: #000000;">$578</td>
+<td class="gt_row gt_right" style="background-color: #EC5E5B; color: #000000;">2,283</td></tr>
+    <tr><td class="gt_row gt_left">Pena High School</td>
+<td class="gt_row gt_right" style="background-color: #0A7432; color: #FFFFFF;">83.8</td>
+<td class="gt_row gt_right" style="background-color: #087331; color: #FFFFFF;">84.0</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">91.7%</td>
+<td class="gt_row gt_right" style="background-color: #006529; color: #FFFFFF;">92.2%</td>
+<td class="gt_row gt_right" style="background-color: #00451B; color: #FFFFFF;">84.8%</td>
+<td class="gt_row gt_right" style="background-color: #E0ECF7; color: #000000;">$585,858</td>
+<td class="gt_row gt_right" style="background-color: #93C4DF; color: #000000;">$609</td>
+<td class="gt_row gt_right" style="background-color: #FECACF; color: #000000;">962</td></tr>
+    <tr><td class="gt_row gt_left">Wright High School</td>
+<td class="gt_row gt_right" style="background-color: #0B7532; color: #FFFFFF;">83.7</td>
+<td class="gt_row gt_right" style="background-color: #097331; color: #FFFFFF;">84.0</td>
+<td class="gt_row gt_right" style="background-color: #005422; color: #FFFFFF;">90.3%</td>
+<td class="gt_row gt_right" style="background-color: #004C1E; color: #FFFFFF;">93.4%</td>
+<td class="gt_row gt_right" style="background-color: #00481D; color: #FFFFFF;">84.4%</td>
+<td class="gt_row gt_right" style="background-color: #BDD7EC; color: #000000;">$1,049,400</td>
+<td class="gt_row gt_right" style="background-color: #EAF3FB; color: #000000;">$583</td>
+<td class="gt_row gt_right" style="background-color: #E87E7E; color: #000000;">1,800</td></tr>
+    <tr><td class="gt_row gt_left">Thomas High School</td>
+<td class="gt_row gt_right" style="background-color: #0D7634; color: #FFFFFF;">83.4</td>
+<td class="gt_row gt_right" style="background-color: #0A7432; color: #FFFFFF;">83.8</td>
+<td class="gt_row gt_right" style="background-color: #005522; color: #FFFFFF;">90.2%</td>
+<td class="gt_row gt_right" style="background-color: #005723; color: #FFFFFF;">92.9%</td>
+<td class="gt_row gt_right" style="background-color: #00491D; color: #FFFFFF;">84.3%</td>
+<td class="gt_row gt_right" style="background-color: #BED7EC; color: #000000;">$1,043,130</td>
+<td class="gt_row gt_right" style="background-color: #1D69AF; color: #FFFFFF;">$638</td>
+<td class="gt_row gt_right" style="background-color: #EC8B8B; color: #000000;">1,635</td></tr>
+    <tr><td class="gt_row gt_left">Holden High School</td>
+<td class="gt_row gt_right" style="background-color: #0A7432; color: #FFFFFF;">83.8</td>
+<td class="gt_row gt_right" style="background-color: #0A7432; color: #FFFFFF;">83.8</td>
+<td class="gt_row gt_right" style="background-color: #005020; color: #FFFFFF;">90.6%</td>
+<td class="gt_row gt_right" style="background-color: #005A24; color: #FFFFFF;">92.7%</td>
+<td class="gt_row gt_right" style="background-color: #004B1E; color: #FFFFFF;">84.1%</td>
+<td class="gt_row gt_right" style="background-color: #F7FBFF; color: #000000;">$248,087</td>
+<td class="gt_row gt_right" style="background-color: #EFF6FD; color: #000000;">$581</td>
+<td class="gt_row gt_right" style="background-color: #FFEBEE; color: #000000;">427</td></tr>
+    <tr><td class="gt_row gt_left">Cabrera High School</td>
+<td class="gt_row gt_right" style="background-color: #107836; color: #FFFFFF;">83.1</td>
+<td class="gt_row gt_right" style="background-color: #087331; color: #FFFFFF;">84.0</td>
+<td class="gt_row gt_right" style="background-color: #005C25; color: #FFFFFF;">89.6%</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">93.9%</td>
+<td class="gt_row gt_right" style="background-color: #004C1E; color: #FFFFFF;">84.0%</td>
+<td class="gt_row gt_right" style="background-color: #BAD6EB; color: #000000;">$1,081,356</td>
+<td class="gt_row gt_right" style="background-color: #EDF4FC; color: #000000;">$582</td>
+<td class="gt_row gt_right" style="background-color: #E77A79; color: #000000;">1,858</td></tr>
+    <tr><td class="gt_row gt_left">Griffin High School</td>
+<td class="gt_row gt_right" style="background-color: #0E7734; color: #FFFFFF;">83.4</td>
+<td class="gt_row gt_right" style="background-color: #0A7432; color: #FFFFFF;">83.8</td>
+<td class="gt_row gt_right" style="background-color: #005A24; color: #FFFFFF;">89.7%</td>
+<td class="gt_row gt_right" style="background-color: #004D1F; color: #FFFFFF;">93.4%</td>
+<td class="gt_row gt_right" style="background-color: #004F20; color: #FFFFFF;">83.7%</td>
+<td class="gt_row gt_right" style="background-color: #C9DDF0; color: #000000;">$917,500</td>
+<td class="gt_row gt_right" style="background-color: #4795C8; color: #000000;">$625</td>
+<td class="gt_row gt_right" style="background-color: #EF9898; color: #000000;">1,468</td></tr>
+    <tr><td class="gt_row gt_left">Shelton High School</td>
+<td class="gt_row gt_right" style="background-color: #0E7734; color: #FFFFFF;">83.4</td>
+<td class="gt_row gt_right" style="background-color: #0B7532; color: #FFFFFF;">83.7</td>
+<td class="gt_row gt_right" style="background-color: #005823; color: #FFFFFF;">89.9%</td>
+<td class="gt_row gt_right" style="background-color: #005D25; color: #FFFFFF;">92.6%</td>
+<td class="gt_row gt_right" style="background-color: #005321; color: #FFFFFF;">83.2%</td>
+<td class="gt_row gt_right" style="background-color: #BCD7EC; color: #000000;">$1,056,600</td>
+<td class="gt_row gt_right" style="background-color: #BBD6EB; color: #000000;">$600</td>
+<td class="gt_row gt_right" style="background-color: #E98181; color: #000000;">1,761</td></tr>
+    <tr><td class="gt_row gt_left">Ford High School</td>
+<td class="gt_row gt_right" style="background-color: #359D53; color: #FFFFFF;">77.1</td>
+<td class="gt_row gt_right" style="background-color: #1F8641; color: #FFFFFF;">80.7</td>
+<td class="gt_row gt_right" style="background-color: #EBF7E7; color: #000000;">65.8%</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">77.5%</td>
+<td class="gt_row gt_right" style="background-color: #EFF9EC; color: #000000;">51.3%</td>
+<td class="gt_row gt_right" style="background-color: #63A8D3; color: #000000;">$1,763,916</td>
+<td class="gt_row gt_right" style="background-color: #0D55A0; color: #FFFFFF;">$644</td>
+<td class="gt_row gt_right" style="background-color: #F24A41; color: #FFFFFF;">2,739</td></tr>
+    <tr><td class="gt_row gt_left">Bailey High School</td>
+<td class="gt_row gt_right" style="background-color: #359E53; color: #FFFFFF;">77.0</td>
+<td class="gt_row gt_right" style="background-color: #1D8540; color: #FFFFFF;">81.0</td>
+<td class="gt_row gt_right" style="background-color: #F0F9ED; color: #000000;">64.6%</td>
+<td class="gt_row gt_right" style="background-color: #E7F6E3; color: #000000;">79.3%</td>
+<td class="gt_row gt_right" style="background-color: #F0F9ED; color: #000000;">51.1%</td>
+<td class="gt_row gt_right" style="background-color: #08306B; color: #FFFFFF;">$3,124,928</td>
+<td class="gt_row gt_right" style="background-color: #3D8BC3; color: #FFFFFF;">$628</td>
+<td class="gt_row gt_right" style="background-color: #B71C1C; color: #FFFFFF;">4,976</td></tr>
+    <tr><td class="gt_row gt_left">Hernandez High School</td>
+<td class="gt_row gt_right" style="background-color: #349C52; color: #FFFFFF;">77.3</td>
+<td class="gt_row gt_right" style="background-color: #1E8540; color: #FFFFFF;">80.9</td>
+<td class="gt_row gt_right" style="background-color: #F0F9ED; color: #000000;">64.7%</td>
+<td class="gt_row gt_right" style="background-color: #F1FAEE; color: #000000;">78.2%</td>
+<td class="gt_row gt_right" style="background-color: #F4FBF2; color: #000000;">50.2%</td>
+<td class="gt_row gt_right" style="background-color: #093979; color: #FFFFFF;">$3,022,020</td>
+<td class="gt_row gt_right" style="background-color: #093A7A; color: #FFFFFF;">$652</td>
+<td class="gt_row gt_right" style="background-color: #C12424; color: #FFFFFF;">4,635</td></tr>
+    <tr><td class="gt_row gt_left">Figueroa High School</td>
+<td class="gt_row gt_right" style="background-color: #37A055; color: #FFFFFF;">76.7</td>
+<td class="gt_row gt_right" style="background-color: #1C843F; color: #FFFFFF;">81.2</td>
+<td class="gt_row gt_right" style="background-color: #F5FBF2; color: #000000;">63.8%</td>
+<td class="gt_row gt_right" style="background-color: #EFF9EB; color: #000000;">78.4%</td>
+<td class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">49.9%</td>
+<td class="gt_row gt_right" style="background-color: #569ECD; color: #000000;">$1,884,411</td>
+<td class="gt_row gt_right" style="background-color: #1A66AD; color: #FFFFFF;">$639</td>
+<td class="gt_row gt_right" style="background-color: #F44336; color: #FFFFFF;">2,949</td></tr>
+    <tr><td class="gt_row gt_left">Huang High School</td>
+<td class="gt_row gt_right" style="background-color: #38A055; color: #FFFFFF;">76.6</td>
+<td class="gt_row gt_right" style="background-color: #1C843F; color: #FFFFFF;">81.2</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">63.3%</td>
+<td class="gt_row gt_right" style="background-color: #ECF8E8; color: #000000;">78.8%</td>
+<td class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">49.9%</td>
+<td class="gt_row gt_right" style="background-color: #539CCC; color: #000000;">$1,910,635</td>
+<td class="gt_row gt_right" style="background-color: #08306B; color: #FFFFFF;">$655</td>
+<td class="gt_row gt_right" style="background-color: #F44438; color: #FFFFFF;">2,917</td></tr>
+    <tr><td class="gt_row gt_left">Johnson High School</td>
+<td class="gt_row gt_right" style="background-color: #359E53; color: #FFFFFF;">77.1</td>
+<td class="gt_row gt_right" style="background-color: #1E8540; color: #FFFFFF;">81.0</td>
+<td class="gt_row gt_right" style="background-color: #F4FBF2; color: #000000;">63.9%</td>
+<td class="gt_row gt_right" style="background-color: #F0F9ED; color: #000000;">78.3%</td>
+<td class="gt_row gt_right" style="background-color: #F6FBF3; color: #000000;">49.8%</td>
+<td class="gt_row gt_right" style="background-color: #08336F; color: #FFFFFF;">$3,094,650</td>
+<td class="gt_row gt_right" style="background-color: #094184; color: #FFFFFF;">$650</td>
+<td class="gt_row gt_right" style="background-color: #BD2121; color: #FFFFFF;">4,761</td></tr>
+    <tr><td class="gt_row gt_left">Rodriguez High School</td>
+<td class="gt_row gt_right" style="background-color: #369F54; color: #FFFFFF;">76.8</td>
+<td class="gt_row gt_right" style="background-color: #1F8641; color: #FFFFFF;">80.7</td>
+<td class="gt_row gt_right" style="background-color: #F3FBF1; color: #000000;">64.1%</td>
+<td class="gt_row gt_right" style="background-color: #F5FBF3; color: #000000;">77.7%</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">49.4%</td>
+<td class="gt_row gt_right" style="background-color: #1964AB; color: #FFFFFF;">$2,547,363</td>
+<td class="gt_row gt_right" style="background-color: #1F6DB2; color: #FFFFFF;">$637</td>
+<td class="gt_row gt_right" style="background-color: #D22F2F; color: #FFFFFF;">3,999</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="scores-by-school-size" class="level4">
+<h4 class="anchored" data-anchor-id="scores-by-school-size">Scores by School Size</h4>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>grades_summary <span class="ot">&lt;-</span>  students_data <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(grade) <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_mth    =</span> <span class="fu">mean</span>(math_score),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">avg_rdg    =</span> <span class="fu">mean</span>(reading_score),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_mth =</span> <span class="fu">sum</span>(pass_mth),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_rdg =</span> <span class="fu">sum</span>(pass_rdg),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_bth =</span> <span class="fu">sum</span>(pass_bth),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">count_students =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">per_pass_math =</span> n_pass_mth<span class="sc">/</span>count_students, </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_rdg  =</span> n_pass_rdg<span class="sc">/</span>count_students,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_bth  =</span> n_pass_bth<span class="sc">/</span>count_students) <span class="sc">|&gt;</span> </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(per_pass_bth))</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>grades_summary <span class="sc">|&gt;</span> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_number</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">decimals  =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_integer</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'count'</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep_mark =</span> <span class="st">","</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_percent</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>                <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gt_color_rows( starts_with("avg"),</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#               palette = c("#FFFFFF","#006D2C"),</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#               domain = 40:90) |&gt; </span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gt_color_rows( starts_with("per"),</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                palette = c("#FFFFFF","#006D2C"),</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                domain = 0:1)|&gt;</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="doviekkkba" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#doviekkkba .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#doviekkkba .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#doviekkkba .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#doviekkkba .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#doviekkkba .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#doviekkkba .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#doviekkkba .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#doviekkkba .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#doviekkkba .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#doviekkkba .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#doviekkkba .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#doviekkkba .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#doviekkkba .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#doviekkkba .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#doviekkkba .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#doviekkkba .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#doviekkkba .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#doviekkkba .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#doviekkkba .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#doviekkkba .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#doviekkkba .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#doviekkkba .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#doviekkkba .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#doviekkkba .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#doviekkkba .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#doviekkkba .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#doviekkkba .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#doviekkkba .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#doviekkkba .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#doviekkkba .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#doviekkkba .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#doviekkkba .gt_left {
+  text-align: left;
+}
+
+#doviekkkba .gt_center {
+  text-align: center;
+}
+
+#doviekkkba .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#doviekkkba .gt_font_normal {
+  font-weight: normal;
+}
+
+#doviekkkba .gt_font_bold {
+  font-weight: bold;
+}
+
+#doviekkkba .gt_font_italic {
+  font-style: italic;
+}
+
+#doviekkkba .gt_super {
+  font-size: 65%;
+}
+
+#doviekkkba .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#doviekkkba .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#doviekkkba .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#doviekkkba .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#doviekkkba .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#doviekkkba .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#doviekkkba .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">grade</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">avg_mth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">avg_rdg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">n_pass_mth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">n_pass_rdg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">n_pass_bth</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">count_students</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">per_pass_math</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">per_pass_rdg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">per_pass_bth</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">9th</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">78.9</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">81.9</td>
+<td class="gt_row gt_right">8241</td>
+<td class="gt_row gt_right">9500</td>
+<td class="gt_row gt_right">6950</td>
+<td class="gt_row gt_right">11,408</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">72.2%</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">83.3%</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">60.9%</td></tr>
+    <tr><td class="gt_row gt_left">11th</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">79.1</td>
+<td class="gt_row gt_right" style="background-color: #30984F; color: #FFFFFF;">81.9</td>
+<td class="gt_row gt_right">7036</td>
+<td class="gt_row gt_right">8024</td>
+<td class="gt_row gt_right">5895</td>
+<td class="gt_row gt_right">9,695</td>
+<td class="gt_row gt_right" style="background-color: #00441B; color: #FFFFFF;">72.6%</td>
+<td class="gt_row gt_right" style="background-color: #B3E1AD; color: #000000;">82.8%</td>
+<td class="gt_row gt_right" style="background-color: #54B465; color: #000000;">60.8%</td></tr>
+    <tr><td class="gt_row gt_left">10th</td>
+<td class="gt_row gt_right" style="background-color: #F1FAEE; color: #000000;">78.9</td>
+<td class="gt_row gt_right" style="background-color: #56B566; color: #000000;">81.9</td>
+<td class="gt_row gt_right">7361</td>
+<td class="gt_row gt_right">8457</td>
+<td class="gt_row gt_right">6181</td>
+<td class="gt_row gt_right">10,168</td>
+<td class="gt_row gt_right" style="background-color: #82CA81; color: #000000;">72.4%</td>
+<td class="gt_row gt_right" style="background-color: #04702E; color: #FFFFFF;">83.2%</td>
+<td class="gt_row gt_right" style="background-color: #6ABF71; color: #000000;">60.8%</td></tr>
+    <tr><td class="gt_row gt_left">12th</td>
+<td class="gt_row gt_right" style="background-color: #9CD797; color: #000000;">79.0</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">81.8</td>
+<td class="gt_row gt_right">5718</td>
+<td class="gt_row gt_right">6519</td>
+<td class="gt_row gt_right">4790</td>
+<td class="gt_row gt_right">7,899</td>
+<td class="gt_row gt_right" style="background-color: #87CD85; color: #000000;">72.4%</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">82.5%</td>
+<td class="gt_row gt_right" style="background-color: #F7FCF5; color: #000000;">60.6%</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="scores-by-school-type" class="level4">
+<h4 class="anchored" data-anchor-id="scores-by-school-type">Scores by School Type</h4>
+<!-- -->
+
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Py City Schools Analysis"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co">    html: </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co">        toc: true</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co">        code-tools: true</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co">        code-fold: true</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">  output: true</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup}</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># load packages </span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtExtras)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># read in CSVs and assign data</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>schools_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../Resources/schools_complete.csv"</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>students_data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../Resources/students_complete.csv"</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## District Summary</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r district_summary_calculations}</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>n_schools <span class="ot">&lt;-</span> <span class="fu">nrow</span>(schools_data)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>n_students <span class="ot">&lt;-</span> <span class="fu">sum</span>(schools_data<span class="sc">$</span>size) <span class="sc">|&gt;</span> <span class="fu">format</span>(<span class="at">big.mark =</span> <span class="st">","</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>total_budget <span class="ot">&lt;-</span> <span class="fu">sum</span>(schools_data<span class="sc">$</span>budget) <span class="sc">|&gt;</span> <span class="fu">format</span>(<span class="at">big.mark =</span> <span class="st">","</span>)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>avg_mth_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(students_data<span class="sc">$</span>math_score) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>avg_rdg_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(students_data<span class="sc">$</span>reading_score) <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>pass_math <span class="ot">&lt;-</span> students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span> (math_score <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()<span class="sc">/</span>students_data <span class="sc">|&gt;</span> <span class="fu">nrow</span>() </span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>per_pass_math <span class="ot">&lt;-</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> .<span class="dv">1</span>)(pass_math)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>pass_read <span class="ot">&lt;-</span> students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span> (reading_score <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()<span class="sc">/</span>students_data <span class="sc">|&gt;</span> <span class="fu">nrow</span>() </span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>per_pass_read <span class="ot">&lt;-</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> .<span class="dv">1</span>)(pass_read)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>pass_math_read <span class="ot">&lt;-</span> students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span> (reading_score <span class="sc">&gt;=</span> <span class="dv">70</span> <span class="sc">&amp;</span> math_score <span class="sc">&gt;=</span> <span class="dv">70</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()<span class="sc">/</span>students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nrow</span>() </span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>per_pass_math_read <span class="ot">&lt;-</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> .<span class="dv">1</span>)(pass_math_read)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Total number of unique schools: <span class="in">`r n_schools`</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Total students: <span class="in">`r n_students`</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Total budget: \$<span class="in">`r total_budget`</span></span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Average math score: <span class="in">`r avg_mth_score`</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Average reading score: <span class="in">`r avg_rdg_score`</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>\% passing math (the percentage of students who passed math): <span class="in">`r per_pass_math`</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>\% passing reading (the percentage of students who passed reading): <span class="in">`r per_pass_read`</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>\% overall passing (the percentage of students who passed math AND reading): <span class="in">`r per_pass_math_read`</span></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>schools_summary <span class="ot">&lt;-</span>  students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(school_name) <span class="sc">|&gt;</span> </span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_mth    =</span> <span class="fu">mean</span>(math_score),</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>              <span class="at">avg_rdg    =</span> <span class="fu">mean</span>(reading_score),</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_mth =</span> <span class="fu">sum</span>(pass_mth),</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_rdg =</span> <span class="fu">sum</span>(pass_rdg),</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_bth =</span> <span class="fu">sum</span>(pass_bth)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>schools_students_data <span class="ot">&lt;-</span> schools_data <span class="sc">|&gt;</span></span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(students_data) <span class="sc">|&gt;</span> </span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">school_size =</span> <span class="fu">case_when</span>(</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a>        size <span class="sc">&gt;=</span><span class="dv">2500</span> <span class="sc">~</span> <span class="st">"large"</span>,</span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>        size <span class="sc">&gt;=</span><span class="dv">1000</span> <span class="sc">~</span> <span class="st">"medium"</span>,</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>        <span class="cn">TRUE</span> <span class="sc">~</span> <span class="st">"small"</span>))</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a><span class="co"># |&gt; </span></span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a><span class="co">#     left_join(schools_summary) </span></span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a><span class="co"># |&gt; </span></span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a><span class="co">#     pivot_longer(c("n_pass_mth",</span></span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "n_pass_rdg",</span></span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "n_pass_bth", </span></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "avg_mth",</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a><span class="co">#                    "avg_rdg"), </span></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a><span class="co">#                  names_to = "subj",</span></span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a><span class="co">#                  values_to = "score")</span></span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a><span class="co"># schools_students_data |&gt; </span></span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a><span class="co">#     select(-students_data) |&gt; </span></span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a><span class="co">#     gt()</span></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a>schools_students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>))  <span class="sc">|&gt;</span> </span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>   <span class="co"># filter(!str_detect(subj, "avg"))</span></span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> school_size, <span class="at">y =</span> avg_mth_score, <span class="at">color =</span> )) <span class="sc">+</span></span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r eval=FALSE}</span></span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a>schools_students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>))  <span class="sc">|&gt;</span> </span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a>   <span class="co"># filter(!str_detect(subj, "avg"))</span></span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span> school_name, <span class="at">y =</span> avg_mth_score)) <span class="sc">+</span></span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>()</span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="fu">## School Analysis</span></span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a><span class="fu">### Performance by School</span></span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Highest-Performing Schools (by % Overall Passing)</span></span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Lowest-Performing Schools (by % Overall Passing)</span></span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="fu">### Performance by Grade</span></span>
+<span id="cb8-129"><a href="#cb8-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-130"><a href="#cb8-130" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Math Scores by Grade </span></span>
+<span id="cb8-131"><a href="#cb8-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-132"><a href="#cb8-132" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Reading Scores by Grade </span></span>
+<span id="cb8-133"><a href="#cb8-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-134"><a href="#cb8-134" aria-hidden="true" tabindex="-1"></a><span class="fu">### Performance by Characteristic</span></span>
+<span id="cb8-135"><a href="#cb8-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-136"><a href="#cb8-136" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Scores by School Spending </span></span>
+<span id="cb8-137"><a href="#cb8-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-140"><a href="#cb8-140" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-141"><a href="#cb8-141" aria-hidden="true" tabindex="-1"></a>schools_summary <span class="ot">&lt;-</span>  students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-142"><a href="#cb8-142" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-143"><a href="#cb8-143" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-144"><a href="#cb8-144" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-145"><a href="#cb8-145" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(school_name) <span class="sc">|&gt;</span> </span>
+<span id="cb8-146"><a href="#cb8-146" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_mth    =</span> <span class="fu">mean</span>(math_score),</span>
+<span id="cb8-147"><a href="#cb8-147" aria-hidden="true" tabindex="-1"></a>              <span class="at">avg_rdg    =</span> <span class="fu">mean</span>(reading_score),</span>
+<span id="cb8-148"><a href="#cb8-148" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_mth =</span> <span class="fu">sum</span>(pass_mth),</span>
+<span id="cb8-149"><a href="#cb8-149" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_rdg =</span> <span class="fu">sum</span>(pass_rdg),</span>
+<span id="cb8-150"><a href="#cb8-150" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_bth =</span> <span class="fu">sum</span>(pass_bth)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-151"><a href="#cb8-151" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-152"><a href="#cb8-152" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(schools_data) <span class="sc">|&gt;</span> </span>
+<span id="cb8-153"><a href="#cb8-153" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">per_pass_math =</span> n_pass_mth<span class="sc">/</span>size, </span>
+<span id="cb8-154"><a href="#cb8-154" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_rdg  =</span> n_pass_rdg<span class="sc">/</span>size,</span>
+<span id="cb8-155"><a href="#cb8-155" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_bth  =</span> n_pass_bth<span class="sc">/</span>size,</span>
+<span id="cb8-156"><a href="#cb8-156" aria-hidden="true" tabindex="-1"></a>           <span class="at">budget_per_std  =</span> budget<span class="sc">/</span>size) <span class="sc">|&gt;</span> </span>
+<span id="cb8-157"><a href="#cb8-157" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(per_pass_bth))</span>
+<span id="cb8-158"><a href="#cb8-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-159"><a href="#cb8-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-160"><a href="#cb8-160" aria-hidden="true" tabindex="-1"></a>schools_summary <span class="sc">|&gt;</span> </span>
+<span id="cb8-161"><a href="#cb8-161" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-162"><a href="#cb8-162" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_number</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb8-163"><a href="#cb8-163" aria-hidden="true" tabindex="-1"></a>               <span class="at">decimals  =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-164"><a href="#cb8-164" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_integer</span>(<span class="at">columns  =</span> <span class="fu">c</span>(<span class="st">'size'</span>),</span>
+<span id="cb8-165"><a href="#cb8-165" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep_mark =</span> <span class="st">","</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-166"><a href="#cb8-166" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_percent</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb8-167"><a href="#cb8-167" aria-hidden="true" tabindex="-1"></a>                <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-168"><a href="#cb8-168" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_currency</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'budget'</span>),</span>
+<span id="cb8-169"><a href="#cb8-169" aria-hidden="true" tabindex="-1"></a>                 <span class="at">decimals =</span> <span class="dv">0</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-170"><a href="#cb8-170" aria-hidden="true" tabindex="-1"></a>    <span class="fu">cols_hide</span>(<span class="at">columns =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">'n_pass'</span>),<span class="st">'School ID'</span>, <span class="st">'type'</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb8-171"><a href="#cb8-171" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"Characteristics"</span>,</span>
+<span id="cb8-172"><a href="#cb8-172" aria-hidden="true" tabindex="-1"></a>                <span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="fu">c</span>(<span class="st">"budget"</span>,<span class="st">"size"</span>)))  <span class="sc">|&gt;</span> </span>
+<span id="cb8-173"><a href="#cb8-173" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">"Performance"</span>,</span>
+<span id="cb8-174"><a href="#cb8-174" aria-hidden="true" tabindex="-1"></a>                <span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="fu">c</span>(<span class="st">"avg"</span>,<span class="st">"per"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb8-175"><a href="#cb8-175" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt_color_rows</span>( <span class="fu">starts_with</span>(<span class="st">"avg"</span>),</span>
+<span id="cb8-176"><a href="#cb8-176" aria-hidden="true" tabindex="-1"></a>                  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#FFFFFF"</span>,<span class="st">"#006D2C"</span>),</span>
+<span id="cb8-177"><a href="#cb8-177" aria-hidden="true" tabindex="-1"></a>                  <span class="at">domain =</span> <span class="dv">40</span><span class="sc">:</span><span class="dv">90</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-178"><a href="#cb8-178" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt_color_rows</span>( <span class="fu">starts_with</span>(<span class="st">"per"</span>),</span>
+<span id="cb8-179"><a href="#cb8-179" aria-hidden="true" tabindex="-1"></a>                   <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">"#FFFFFF"</span>,<span class="st">"#006D2C"</span>),</span>
+<span id="cb8-180"><a href="#cb8-180" aria-hidden="true" tabindex="-1"></a>                   <span class="at">domain =</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>)<span class="sc">|&gt;</span> </span>
+<span id="cb8-181"><a href="#cb8-181" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gt_color_rows( starts_with("per"),</span></span>
+<span id="cb8-182"><a href="#cb8-182" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                palette = c("#FFFFFF","#006D2C"),</span></span>
+<span id="cb8-183"><a href="#cb8-183" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                domain = 0:1)|&gt; </span></span>
+<span id="cb8-184"><a href="#cb8-184" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'budget'</span>),</span>
+<span id="cb8-185"><a href="#cb8-185" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Blues"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb8-186"><a href="#cb8-186" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb8-187"><a href="#cb8-187" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb8-188"><a href="#cb8-188" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb8-189"><a href="#cb8-189" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="dv">50</span><span class="sc">:</span><span class="dv">90</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-190"><a href="#cb8-190" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt_color_rows</span>(size)</span>
+<span id="cb8-191"><a href="#cb8-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-192"><a href="#cb8-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-193"><a href="#cb8-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-194"><a href="#cb8-194" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-195"><a href="#cb8-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-196"><a href="#cb8-196" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Scores by School Size </span></span>
+<span id="cb8-197"><a href="#cb8-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-200"><a href="#cb8-200" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb8-201"><a href="#cb8-201" aria-hidden="true" tabindex="-1"></a>grades_summary <span class="ot">&lt;-</span>  students_data <span class="sc">|&gt;</span> </span>
+<span id="cb8-202"><a href="#cb8-202" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">pass_mth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-203"><a href="#cb8-203" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_rdg =</span> <span class="fu">if_else</span>(reading_score <span class="sc">&gt;</span> <span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>),</span>
+<span id="cb8-204"><a href="#cb8-204" aria-hidden="true" tabindex="-1"></a>           <span class="at">pass_bth =</span> <span class="fu">if_else</span>(math_score <span class="sc">&gt;</span> <span class="dv">70</span> <span class="sc">&amp;</span> reading_score <span class="sc">&gt;</span><span class="dv">70</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-205"><a href="#cb8-205" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(grade) <span class="sc">|&gt;</span> </span>
+<span id="cb8-206"><a href="#cb8-206" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="at">avg_mth    =</span> <span class="fu">mean</span>(math_score),</span>
+<span id="cb8-207"><a href="#cb8-207" aria-hidden="true" tabindex="-1"></a>              <span class="at">avg_rdg    =</span> <span class="fu">mean</span>(reading_score),</span>
+<span id="cb8-208"><a href="#cb8-208" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_mth =</span> <span class="fu">sum</span>(pass_mth),</span>
+<span id="cb8-209"><a href="#cb8-209" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_rdg =</span> <span class="fu">sum</span>(pass_rdg),</span>
+<span id="cb8-210"><a href="#cb8-210" aria-hidden="true" tabindex="-1"></a>              <span class="at">n_pass_bth =</span> <span class="fu">sum</span>(pass_bth),</span>
+<span id="cb8-211"><a href="#cb8-211" aria-hidden="true" tabindex="-1"></a>              <span class="at">count_students =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb8-212"><a href="#cb8-212" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">per_pass_math =</span> n_pass_mth<span class="sc">/</span>count_students, </span>
+<span id="cb8-213"><a href="#cb8-213" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_rdg  =</span> n_pass_rdg<span class="sc">/</span>count_students,</span>
+<span id="cb8-214"><a href="#cb8-214" aria-hidden="true" tabindex="-1"></a>           <span class="at">per_pass_bth  =</span> n_pass_bth<span class="sc">/</span>count_students) <span class="sc">|&gt;</span> </span>
+<span id="cb8-215"><a href="#cb8-215" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(per_pass_bth))</span>
+<span id="cb8-216"><a href="#cb8-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-217"><a href="#cb8-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-218"><a href="#cb8-218" aria-hidden="true" tabindex="-1"></a>grades_summary <span class="sc">|&gt;</span> </span>
+<span id="cb8-219"><a href="#cb8-219" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-220"><a href="#cb8-220" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_number</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb8-221"><a href="#cb8-221" aria-hidden="true" tabindex="-1"></a>               <span class="at">decimals  =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-222"><a href="#cb8-222" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_integer</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'count'</span>),</span>
+<span id="cb8-223"><a href="#cb8-223" aria-hidden="true" tabindex="-1"></a>                <span class="at">sep_mark =</span> <span class="st">","</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-224"><a href="#cb8-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fmt_percent</span>(<span class="at">columns  =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb8-225"><a href="#cb8-225" aria-hidden="true" tabindex="-1"></a>                <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-226"><a href="#cb8-226" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gt_color_rows( starts_with("avg"),</span></span>
+<span id="cb8-227"><a href="#cb8-227" aria-hidden="true" tabindex="-1"></a>    <span class="co">#               palette = c("#FFFFFF","#006D2C"),</span></span>
+<span id="cb8-228"><a href="#cb8-228" aria-hidden="true" tabindex="-1"></a>    <span class="co">#               domain = 40:90) |&gt; </span></span>
+<span id="cb8-229"><a href="#cb8-229" aria-hidden="true" tabindex="-1"></a>    <span class="co"># gt_color_rows( starts_with("per"),</span></span>
+<span id="cb8-230"><a href="#cb8-230" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                palette = c("#FFFFFF","#006D2C"),</span></span>
+<span id="cb8-231"><a href="#cb8-231" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                domain = 0:1)|&gt;</span></span>
+<span id="cb8-232"><a href="#cb8-232" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'per'</span>),</span>
+<span id="cb8-233"><a href="#cb8-233" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>))<span class="sc">|&gt;</span> </span>
+<span id="cb8-234"><a href="#cb8-234" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data_color</span>(<span class="at">columns =</span> <span class="fu">starts_with</span>(<span class="st">'avg'</span>),</span>
+<span id="cb8-235"><a href="#cb8-235" aria-hidden="true" tabindex="-1"></a>               <span class="at">colors =</span> <span class="fu">col_numeric</span>(<span class="st">"Greens"</span>,<span class="at">domain =</span> <span class="cn">NULL</span>)) </span>
+<span id="cb8-236"><a href="#cb8-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-237"><a href="#cb8-237" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb8-238"><a href="#cb8-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-239"><a href="#cb8-239" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Scores by School Type</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+</body></html>

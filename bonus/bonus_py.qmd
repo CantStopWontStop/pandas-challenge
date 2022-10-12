@@ -1,0 +1,173 @@
+---
+title: "Py City Schools Analysis"
+
+format: 
+    html: 
+        toc: true
+        code-tools: true
+        code-fold: true
+execute: 
+  output: true
+  echo: true
+  warning: false
+---
+
+## 
+
+```{r}
+library(reticulate)
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+
+school_data    = pd.read_csv("../Resources/schools_complete.csv")
+student_data   = pd.read_csv("../Resources/students_complete.csv")
+n_students     = len(student_data)
+total_budget   = school_data['budget'].sum()
+avg_mth_score  = student_data['math_score'].mean()
+avg_rdg_score  = student_data['reading_score'].mean()
+pass_math      = len(student_data.loc[student_data['math_score'] >= 70]) / len(student_data)
+pass_read      = len(student_data.loc[student_data['reading_score'] >= 70]) / len(student_data)
+pass_read_math = len(student_data.loc[(student_data['reading_score'] >= 70) & (student_data['math_score'] >= 70)] )/ len(student_data)
+
+
+print(f'Total number of unique schools: {n_students}' + "\n"+
+       f'Total students: {total_budget}'+ "\n"+
+       f'Total budget: {avg_mth_score}'+ "\n"+
+       f'Average math score: {avg_rdg_score}'+ "\n"+
+       f'Average reading score: {pass_math}'+ "\n"+
+       f'% passing math (the percentage of students who passed math): {pass_math}'+ "\n"+
+       f'% passing reading (the percentage of students who passed reading): {pass_read}'+ "\n"+
+       f'% overall passing (the percentage of students who passed math AND reading): {pass_read_math}')
+```
+
+```{python}
+
+student_data['pass_math'] = (student_data['math_score']>=70)
+
+student_data['pass_read'] = (student_data['reading_score']>=70)
+
+student_data['pass_both'] =(student_data['math_score']>=70) & (student_data['reading_score']>=70)
+
+student_data
+```
+
+```{python}
+
+
+student_data['pass_math'] = np.where(student_data['math_score']>=70,1,0)
+
+student_data['pass_read'] = np.where(student_data['reading_score']>=70,1,0)
+
+student_data['pass_both'] = np.where((student_data['math_score']>=70) & (student_data['reading_score']>=70),1,0)
+
+student_data
+```
+
+```{python}
+
+school_summary = student_data.groupby(['school_name']).agg(n_pass_both = pd.NamedAgg(column = 'pass_both', aggfunc ='sum'),
+ n_students  = pd.NamedAgg(column = 'student_name', aggfunc ='count'),
+ avg_math    = pd.NamedAgg(column = 'math_score', aggfunc ='mean'),
+ avg_read    = pd.NamedAgg(column = 'reading_score', aggfunc ='mean')
+ )
+
+
+school_students_data = pd.merge(school_summary, school_data, on = "school_name")
+
+
+school_students_data['per_pass_both'] = school_students_data['n_pass_both']/ school_students_data['size']
+
+school_students_data['per_student_budget'] = school_students_data['budget'] /school_students_data['size']
+
+school_students_data = school_students_data.sort_values(by=['per_pass_both'], ascending=False)
+
+
+
+school_students_data.head()
+```
+
+```{python}
+
+school_students_data.tail().sort_values(by = ['per_pass_both'])
+
+```
+
+```{python}
+
+grade_summary = student_data.groupby(['grade']).agg(n_pass_both = pd.NamedAgg(column = 'pass_both', aggfunc ='sum'),
+ n_students  = pd.NamedAgg(column = 'student_name', aggfunc ='count'),
+ avg_math    = pd.NamedAgg(column = 'math_score', aggfunc ='mean'),
+ avg_read    = pd.NamedAgg(column = 'reading_score', aggfunc ='mean')
+ )
+ 
+
+ grade_summary[['avg_math','avg_read']]
+
+```
+
+```{python}
+
+school_size_bins   = [0,1000,2500,10000]
+
+school_size_labels = ["small", "medium", "large"]
+
+
+school_data["school_size"] = pd.cut(school_data["size"], school_size_bins, labels=school_size_labels, include_lowest=True)
+
+
+
+school_size_data = pd.merge(student_data,school_data, on = 'school_name', how="left")
+
+school_size_summary = school_size_data.groupby(['school_size']).agg(n_pass_both = pd.NamedAgg(column = 'pass_both', aggfunc ='sum'),
+ n_pass_math = pd.NamedAgg(column = 'pass_math', aggfunc ='sum'),
+ n_pass_read = pd.NamedAgg(column = 'pass_read', aggfunc ='sum'),
+ n_students  = pd.NamedAgg(column = 'student_name', aggfunc ='count'),
+ n_schools   = pd.NamedAgg(column = 'school_name', aggfunc ='nunique'),
+ avg_math    = pd.NamedAgg(column = 'math_score', aggfunc ='mean'),
+ avg_read    = pd.NamedAgg(column = 'reading_score', aggfunc ='mean')
+ )
+ 
+ 
+school_size_summary['per_pass_both'] = school_size_summary['n_pass_both']/ school_size_summary['n_students']
+
+school_size_summary['per_pass_read'] = school_size_summary['n_pass_read']/ school_size_summary['n_students']
+
+school_size_summary['per_pass_math'] = school_size_summary['n_pass_math']/ school_size_summary['n_students']
+
+school_size_summary[['n_students', 'n_schools','avg_math','avg_read', 'per_pass_both', 'per_pass_read', 'per_pass_math']]
+```
+
+```{python}
+
+school_spending_bins   = [0,1000000,2000000,30000000]
+
+school_spending_labels = ["<$1M", "$1M-$2M", "<$2M"]
+
+
+school_data["spending"] = pd.cut(school_data["budget"], school_spending_bins, labels=school_spending_labels, include_lowest=True)
+
+
+
+school_size_data = pd.merge(student_data,school_data, on = 'school_name', how="left")
+
+school_size_summary = school_size_data.groupby(['spending']).agg(n_pass_both = pd.NamedAgg(column = 'pass_both', aggfunc ='sum'),
+ n_pass_math = pd.NamedAgg(column = 'pass_math', aggfunc ='sum'),
+ n_pass_read = pd.NamedAgg(column = 'pass_read', aggfunc ='sum'),
+ n_students  = pd.NamedAgg(column = 'student_name', aggfunc ='count'),
+ n_schools   = pd.NamedAgg(column = 'school_name', aggfunc ='nunique'),
+ avg_math    = pd.NamedAgg(column = 'math_score', aggfunc ='mean'),
+ avg_read    = pd.NamedAgg(column = 'reading_score', aggfunc ='mean')
+ )
+ 
+ 
+school_size_summary['per_pass_both'] = school_size_summary['n_pass_both']/ school_size_summary['n_students']
+
+school_size_summary['per_pass_read'] = school_size_summary['n_pass_read']/ school_size_summary['n_students']
+
+school_size_summary['per_pass_math'] = school_size_summary['n_pass_math']/ school_size_summary['n_students']
+
+school_size_summary[['n_students', 'n_schools','avg_math','avg_read', 'per_pass_both', 'per_pass_read', 'per_pass_math']]
+```

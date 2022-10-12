@@ -1,0 +1,237 @@
+---
+title: "Py City Schools Analysis"
+
+format: 
+    html: 
+        toc: true
+        code-tools: true
+        code-fold: true
+execute: 
+  output: true
+  echo: true
+  warning: false
+---
+
+```{r setup}
+
+# load packages 
+library(tidyverse)
+library(scales)
+library(gt)
+library(gtExtras)
+# read in CSVs and assign data
+schools_data <- read_csv("../Resources/schools_complete.csv")
+students_data <- read_csv("../Resources/students_complete.csv")
+```
+
+## District Summary
+
+```{r district_summary_calculations}
+n_schools <- nrow(schools_data)
+n_students <- sum(schools_data$size) |> format(big.mark = ",")
+total_budget <- sum(schools_data$budget) |> format(big.mark = ",")
+avg_mth_score <- mean(students_data$math_score) |> round(1)
+avg_rdg_score <- mean(students_data$reading_score) |> round(1)
+pass_math <- students_data |> 
+    filter (math_score >= 70) |> nrow()/students_data |> nrow() 
+per_pass_math <- scales::label_percent(accuracy = .1)(pass_math)
+pass_read <- students_data |> 
+    filter (reading_score >= 70) |> nrow()/students_data |> nrow() 
+per_pass_read <- scales::label_percent(accuracy = .1)(pass_read)
+pass_math_read <- students_data |> 
+    filter (reading_score >= 70 & math_score >= 70) |> nrow()/students_data |> 
+    nrow() 
+per_pass_math_read <- scales::label_percent(accuracy = .1)(pass_math_read)
+```
+
+-   Total number of unique schools: `r n_schools`
+
+-   Total students: `r n_students`
+
+-   Total budget: \$`r total_budget`
+
+-   Average math score: `r avg_mth_score`
+
+-   Average reading score: `r avg_rdg_score`
+
+-   \% passing math (the percentage of students who passed math): `r per_pass_math`
+
+-   \% passing reading (the percentage of students who passed reading): `r per_pass_read`
+
+-   \% overall passing (the percentage of students who passed math AND reading): `r per_pass_math_read`
+
+```{r eval=FALSE}
+
+schools_summary <-  students_data |> 
+    mutate(pass_mth = if_else(math_score > 70, 1, 0),
+           pass_rdg = if_else(reading_score > 70, 1, 0),
+           pass_bth = if_else(math_score > 70 & reading_score >70, 1, 0)) |> 
+    group_by(school_name) |> 
+    summarise(avg_mth    = mean(math_score),
+              avg_rdg    = mean(reading_score),
+              n_pass_mth = sum(pass_mth),
+              n_pass_rdg = sum(pass_rdg),
+              n_pass_bth = sum(pass_bth)) |> 
+    ungroup()
+
+schools_students_data <- schools_data |>
+    left_join(students_data) |> 
+    mutate(school_size = case_when(
+        size >=2500 ~ "large",
+        size >=1000 ~ "medium",
+        TRUE ~ "small"))
+# |> 
+#     left_join(schools_summary) 
+# |> 
+#     pivot_longer(c("n_pass_mth",
+#                    "n_pass_rdg",
+#                    "n_pass_bth", 
+#                    "avg_mth",
+#                    "avg_rdg"), 
+#                  names_to = "subj",
+#                  values_to = "score")
+# 
+# schools_students_data |> 
+#     select(-students_data) |> 
+#     gt()
+```
+
+```{r eval=FALSE}
+schools_students_data |> 
+    mutate(pass_mth = if_else(math_score > 70, 1, 0),
+           pass_rdg = if_else(reading_score > 70, 1, 0),
+           pass_bth = if_else(math_score > 70 & reading_score >70, 1, 0))  |> 
+   # filter(!str_detect(subj, "avg"))
+    ggplot(aes(x= school_size, y = avg_mth_score, color = )) +
+    geom_point()
+
+```
+
+```{r eval=FALSE}
+schools_students_data |> 
+    mutate(pass_mth = if_else(math_score > 70, 1, 0),
+           pass_rdg = if_else(reading_score > 70, 1, 0),
+           pass_bth = if_else(math_score > 70 & reading_score >70, 1, 0))  |> 
+   # filter(!str_detect(subj, "avg"))
+    ggplot(aes(x= school_name, y = avg_mth_score)) +
+    geom_point()
+```
+
+## School Analysis
+
+### Performance by School
+
+#### Highest-Performing Schools (by % Overall Passing)
+
+#### Lowest-Performing Schools (by % Overall Passing)
+
+### Performance by Grade
+
+#### Math Scores by Grade 
+
+#### Reading Scores by Grade 
+
+### Performance by Characteristic
+
+#### Scores by School Spending 
+
+```{r}
+
+schools_summary <-  students_data |> 
+    mutate(pass_mth = if_else(math_score > 70, 1, 0),
+           pass_rdg = if_else(reading_score > 70, 1, 0),
+           pass_bth = if_else(math_score > 70 & reading_score >70, 1, 0)) |> 
+    group_by(school_name) |> 
+    summarise(avg_mth    = mean(math_score),
+              avg_rdg    = mean(reading_score),
+              n_pass_mth = sum(pass_mth),
+              n_pass_rdg = sum(pass_rdg),
+              n_pass_bth = sum(pass_bth)) |> 
+    ungroup() |> 
+    left_join(schools_data) |> 
+    mutate(per_pass_math = n_pass_mth/size, 
+           per_pass_rdg  = n_pass_rdg/size,
+           per_pass_bth  = n_pass_bth/size,
+           budget_per_std  = budget/size) |> 
+    arrange(desc(per_pass_bth))
+
+
+schools_summary |> 
+    gt() |> 
+    fmt_number(columns  = starts_with('avg'),
+               decimals  = 1) |> 
+    fmt_integer(columns  = c('size'),
+                sep_mark = ",") |> 
+    fmt_percent(columns  = starts_with('per'),
+                decimals = 1) |> 
+    fmt_currency(columns = starts_with('budget'),
+                 decimals = 0) |> 
+    cols_hide(columns = c(starts_with('n_pass'),'School ID', 'type'))|> 
+    tab_spanner(label = "Characteristics",
+                columns = starts_with(c("budget","size")))  |> 
+    tab_spanner(label = "Performance",
+                columns = starts_with(c("avg","per"))) |> 
+    gt_color_rows( starts_with("avg"),
+                  palette = c("#FFFFFF","#006D2C"),
+                  domain = 40:90) |> 
+    gt_color_rows( starts_with("per"),
+                   palette = c("#FFFFFF","#006D2C"),
+                   domain = 0:1)|> 
+    # gt_color_rows( starts_with("per"),
+    #                palette = c("#FFFFFF","#006D2C"),
+    #                domain = 0:1)|> 
+    data_color(columns = starts_with('budget'),
+               colors = col_numeric("Blues",domain = NULL))|> 
+    data_color(columns = starts_with('per'),
+               colors = col_numeric("Greens",domain = NULL))|> 
+    data_color(columns = starts_with('avg'),
+               colors = col_numeric("Greens",domain = 50:90)) |> 
+    gt_color_rows(size)
+
+
+
+```
+
+#### Scores by School Size 
+
+```{r}
+
+grades_summary <-  students_data |> 
+    mutate(pass_mth = if_else(math_score > 70, 1, 0),
+           pass_rdg = if_else(reading_score > 70, 1, 0),
+           pass_bth = if_else(math_score > 70 & reading_score >70, 1, 0)) |> 
+    group_by(grade) |> 
+    summarise(avg_mth    = mean(math_score),
+              avg_rdg    = mean(reading_score),
+              n_pass_mth = sum(pass_mth),
+              n_pass_rdg = sum(pass_rdg),
+              n_pass_bth = sum(pass_bth),
+              count_students = n()) |> 
+    mutate(per_pass_math = n_pass_mth/count_students, 
+           per_pass_rdg  = n_pass_rdg/count_students,
+           per_pass_bth  = n_pass_bth/count_students) |> 
+    arrange(desc(per_pass_bth))
+
+
+grades_summary |> 
+    gt() |> 
+    fmt_number(columns  = starts_with('avg'),
+               decimals  = 1) |> 
+    fmt_integer(columns  = starts_with('count'),
+                sep_mark = ",") |> 
+    fmt_percent(columns  = starts_with('per'),
+                decimals = 1) |> 
+    # gt_color_rows( starts_with("avg"),
+    #               palette = c("#FFFFFF","#006D2C"),
+    #               domain = 40:90) |> 
+    # gt_color_rows( starts_with("per"),
+    #                palette = c("#FFFFFF","#006D2C"),
+    #                domain = 0:1)|>
+    data_color(columns = starts_with('per'),
+               colors = col_numeric("Greens",domain = NULL))|> 
+    data_color(columns = starts_with('avg'),
+               colors = col_numeric("Greens",domain = NULL)) 
+
+```
+
+#### Scores by School Type
